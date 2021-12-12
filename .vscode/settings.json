@@ -1,0 +1,7 @@
+{
+  "eslint.workingDirectories": [
+    "production/gateway",
+    "production/example-service",
+    "types"
+  ]
+}
