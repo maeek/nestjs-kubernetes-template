@@ -1,0 +1,90 @@
+version: "3"
+
+networks:
+  backend:
+    driver: bridge
+  frontend:
+    external:
+      name: infrastructure
+
+services:
+  gateway:
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile.development
+    restart: always
+    hostname: ${GATEWAY_SERVICE_HOST}
+    env_file:
+      - .env.test
+    networks:
+      - backend
+      - frontend
+    ports:
+      - "8080:8080"
+    volumes:
+      - "./production/gateway/:/app"
+
+  example:
+    build:
+      context: ./production/example-serive
+      dockerfile: Dockerfile.development
+    restart: always
+    hostname: production/example-serive
+    env_file:
+      - .env.test
+    networks:
+      - backend
+    volumes:
+      - "./production/example-service/:/app"
+    # links:
+    #  - db
+
+  # Uncomment to enable MongoDB
+  # db:
+  #   image: "mongo"
+  #   restart: always
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}
+  #     MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+  #     MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+  #     MONGO_USER: ${MONGO_USER}
+  #     MONGO_PASSWORD: ${MONGO_PASSWORD}
+  #     TZ: "Europe/Warsaw"
+  #   volumes:
+  #     - "./db/data/db-files:/data/db"
+  #     - "./db/init/:/docker-entrypoint-initdb.d/"
+  #   ports:
+  #     - 27017:27017
+  #   networks:
+  #     - backend
+
+  # Uncomment to enable redis
+  # redis:
+  #   image: redis
+  #   restart: always
+  #   hostname: redis
+  #   networks:
+  #     - backend
+  #   env_file:
+  #     - .env
+
+  # Uncomment to enable RabbitMQ
+  # rabbitmq:
+  #   image: rabbitmq:3-management
+  #   restart: always
+  #   hostname: rabbitmq
+  #   networks:
+  #     - frontend
+  #     - backend
+  #   env_file:
+  #     - .env
+  #   # Uncomment to initialize RabbitMQ with predefined configuration
+  #   # volumes:
+  #   #  - './configs/rabbitmq-init.json:/tmp/rabbitmq-init.json'
+  #   # environment:
+  #   #  - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbitmq_management load_definitions "/tmp/rabbitmq-init.json"
+
+  #   # Uncomment to expose RabbitMQ Management service port
+  #   # ports:
+  #   #  - "15672:15672"
+
