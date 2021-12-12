@@ -1,0 +1,9 @@
+FROM node:14.8.0-alpine
+
+RUN mkdir -p /app
+
+WORKDIR /app
+
+VOLUME [ "/app" ]
+
+CMD npm run start:dev
