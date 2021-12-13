@@ -26,4 +26,4 @@ import { ExampleService } from './services/example.service';
   controllers: [ExampleController],
   providers: [ExampleService],
 })
-export class ExamplesModule {}
+export class ExampleModule {}
