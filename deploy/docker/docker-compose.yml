@@ -9,23 +9,29 @@ networks:
 
 services:
   gateway:
-    build: ./production/gateway
+    build:
+      context: ../../production
+      dockerfile: ../deploy/docker/gateway/Dockerfile
     restart: always
-    hostname: ${GATEWAY_SERVICE_HOST}
+    hostname: gateway
     env_file:
-      - .env
+      - ../../config/.env
     ports:
       - "8080:8080"
     networks:
-      - backend
       - frontend
+      - backend
+    links:
+     - example
 
   example:
-    build: ./production/example-service
+    build:
+      context: ../../production
+      dockerfile: ../deploy/docker/example/Dockerfile
     restart: always
-    hostname: ${EXAMPLE_SERVICE_HOST}
+    hostname: example
     env_file:
-      - .env
+      - ../../config/.env
     networks:
       - backend
     # links:
@@ -58,7 +64,7 @@ services:
   #   networks:
   #     - backend
   #   env_file:
-  #     - .env
+  #     - ../../config/.env
 
   # Uncomment to enable RabbitMQ
   # rabbitmq:
@@ -69,7 +75,7 @@ services:
   #     - frontend
   #     - backend
   #   env_file:
-  #     - .env
+  #     - ../../config/.env
   #   # Uncomment to initialize RabbitMQ with predefined configuration
   #   # volumes:
   #   #  - './configs/rabbitmq-init.json:/tmp/rabbitmq-init.json'

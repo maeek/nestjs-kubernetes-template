@@ -29,7 +29,7 @@ services:
       context: ./production/example-serive
       dockerfile: Dockerfile.development
     restart: always
-    hostname: production/example-serive
+    hostname: ${EXAMPLE_SERVICE_HOST}
     env_file:
       - .env.test
     networks:
