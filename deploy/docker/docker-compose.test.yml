@@ -10,32 +10,34 @@ networks:
 services:
   gateway:
     build:
-      context: ./gateway
-      dockerfile: Dockerfile.development
+      context: ../../production
+      dockerfile: ../deploy/docker/gateway/Dockerfile.development
     restart: always
     hostname: ${GATEWAY_SERVICE_HOST}
     env_file:
-      - .env.test
+      - ../../config/.env.test
     networks:
       - backend
       - frontend
     ports:
       - "8080:8080"
     volumes:
-      - "./production/gateway/:/app"
+      - "../../production/types/:/srv/types/"
+      - "../../production/gateway/:/srv/gateway/"
 
   example:
     build:
-      context: ./production/example-serive
-      dockerfile: Dockerfile.development
+      context: ../../production
+      dockerfile: ../deploy/docker/example/Dockerfile.development
     restart: always
     hostname: ${EXAMPLE_SERVICE_HOST}
     env_file:
-      - .env.test
+      - ../../config/.env.test
     networks:
       - backend
     volumes:
-      - "./production/example-service/:/app"
+      - "../../production/types/:/srv/types/"
+      - "../../production/example-service/:/srv/example-service/"
     # links:
     #  - db
 

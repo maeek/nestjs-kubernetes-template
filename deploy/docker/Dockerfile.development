@@ -1,0 +1,22 @@
+ARG SERVICE_NAME
+
+FROM node:14.8.0-alpine as builder
+
+WORKDIR /srv
+
+COPY ./${SERVICE_NAME} ./${SERVICE_NAME}
+COPY ./types ./types
+
+RUN npm --prefix ${SERVICE_NAME} ci && npm --prefix types ci
+
+FROM node:14.8.0-alpine
+
+WORKDIR /srv
+
+COPY --from=builder /srv/${SERVICE_NAME}/node_modules/ ./node_modules/
+
+VOLUME [ "/srv/${SERVICE_NAME}/", "/srv/types" ]
+
+EXPOSE 8080
+
+CMD npm --prefix ${SERVICE_NAME} run start:dev

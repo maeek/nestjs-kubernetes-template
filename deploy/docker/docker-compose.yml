@@ -11,7 +11,9 @@ services:
   gateway:
     build:
       context: ../../production
-      dockerfile: ../deploy/docker/gateway/Dockerfile
+      dockerfile: ../deploy/docker/Dockerfile
+      args:
+        servicename: gateway
     restart: always
     hostname: gateway
     env_file:
@@ -21,13 +23,13 @@ services:
     networks:
       - frontend
       - backend
-    links:
-     - example
 
   example:
     build:
       context: ../../production
-      dockerfile: ../deploy/docker/example/Dockerfile
+      dockerfile: ../deploy/docker/Dockerfile
+      args:
+        servicename: example-service
     restart: always
     hostname: example
     env_file:
