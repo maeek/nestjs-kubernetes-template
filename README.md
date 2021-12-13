@@ -12,7 +12,7 @@
 - RabbitMQ - optional
 - Prometheus monitoring - optional
 
-## Accessing the API itself and swagger docs for the API
+## Accessing the API and swagger docs
 
 - Once you launch the API it will be accessible on port 8000.
 - RabbitMQ management will be accessible on port 15672
@@ -27,3 +27,8 @@
 - MongoDB database - right now there is a single DB to store all the data
 - RabbitMQ - message broker service that allow communication between services, pub/sub
 - Redis - used for caching for faster and less database heavy requests, pub/sub
+
+## Working with this template
+
+- [Deployment with Docker](./docs/Docker.md)
+- [Deployment with Kubernetes](./docs/Kubernetes.md)
