@@ -4,6 +4,7 @@ import {
   Inject,
   HttpStatus,
   HttpException,
+  Post,
 } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 import { ClientProxy } from '@nestjs/microservices';
@@ -15,7 +16,7 @@ import { ExampleService } from 'shared-types';
 
 @Controller('example')
 @ApiTags('example')
-export class exampleController {
+export class ExampleController {
   constructor(
     @Inject('EXAMPLE_SERVICE')
     private readonly exampleServiceClient: ClientProxy,
@@ -23,7 +24,7 @@ export class exampleController {
 
   @Get()
   @Permission('example.get')
-  public async getResult(): Promise<ExampleResponse> {
+  public async postResult(): Promise<ExampleResponse> {
     const exampleResponse: ExampleService.ServiceResponse = await firstValueFrom(
       this.exampleServiceClient.send(
         EXAMPLE_SERVICE_ACTIONS_ENUM.EXAMPLE_SERVICE_ACTION_1,
@@ -46,7 +47,7 @@ export class exampleController {
 
     return {
       result: exampleResponse.result,
-      error: exampleResponse?.error,
+      error: exampleResponse?.errors,
     };
   }
 }

@@ -10,7 +10,7 @@ export class ConfigService {
     this.envConfig.exampleService = {
       options: {
         port: process.env.API_PORT,
-        host: process.env.USER_SERVICE_HOST,
+        host: process.env.EXAMPLE_SERVICE_HOST,
       },
       transport: Transport.TCP,
     };

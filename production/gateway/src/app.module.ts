@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { ClientProxyFactory } from '@nestjs/microservices';
+import { ExampleController } from './controllers/example.controller';
+import { StatusController } from './controllers/status.controller';
 import { ConfigService } from './services/config/config.service';
 import { PermissionGuard } from './services/guards/permission.guard';
 
 @Module({
   imports: [],
-  controllers: [],
+  controllers: [StatusController, ExampleController],
   providers: [
     ConfigService,
     {
