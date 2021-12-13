@@ -24,6 +24,7 @@
     "reflect-metadata": "0.1.13",
     "rimraf": "3.0.2",
     "rxjs": "7.4.0",
+    "shared-types": "file:../types",
     "swagger-ui-express": "4.1.6"
   },
   "devDependencies": {
@@ -45,7 +46,6 @@
     "ts-node": "10.4.0",
     "tsc-watch": "4.5.0",
     "tsconfig-paths": "3.12.0",
-    "typescript": "4.5.3",
-    "shared-types": "file://../../types"
+    "typescript": "4.5.3"
   }
 }
