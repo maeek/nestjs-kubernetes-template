@@ -3,3 +3,8 @@ dist
 
 .env
 .env.test
+
+htpasswd
+local-registry
+
+.log
