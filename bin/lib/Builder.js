@@ -1,6 +1,7 @@
 const path = require('path');
 const child_proc = require('child_process');
 const config = require('../../config/config');
+const { humanFileSize } = require('./utils');
 const Command = require('./Command');
 
 const isDev = config.mode === 'development';
@@ -11,43 +12,63 @@ class Builder extends Command {
     config.basePath,
     `deploy/docker/Dockerfile${isDev ? '.development' : ''}`
   );
-  
-  static getBuildCommandArguments = (
-    serviceName,
-    tag,
-    dockerfilePath = Builder.DOCKERFILE_PATH
-  ) => [
-    '-f',
-    `${dockerfilePath}`,
-    '--build-arg',
-    `SERVICE_NAME=${serviceName}`,
-    '-t',
-    `${tag}`,
-    'production/'
-  ];
 
   constructor(name, conf = {}) {
     super(name, conf);
 
+    const absoluteDockerfilePath = this._getDockerfilePath(name, conf);
     const registryUrl = config.registryUrl ? `${config.registryUrl}/` : '';
     const tag = `${registryUrl}${config.imgPrefix}${this.name}`;
-    const commandArgs = Builder.getBuildCommandArguments(
-      this.name, tag, this.config.dockerfilePath
-    );
 
     this.config = {
       bin: config.dockerPath || 'docker',
-      arguments: [
-        'build',
-        ...(this.config?.buildArgs || []),
-        ...commandArgs
-      ],
       cwd: config.basePath,
       tag,
-      dockerfilePath: Builder.DOCKERFILE_PATH,
-      ...conf
+      dockerfilePath: absoluteDockerfilePath,
+      ...conf,
+      realDockerfilePath: absoluteDockerfilePath ? absoluteDockerfilePath : undefined,
     };
 
+    this.config.arguments = conf.arguments
+      ? config.arguments
+      : this._getDockerBuildCommand(conf);
+
+    this._setupImageUtils();
+  }
+  
+  _getDockerBuildCommand = (conf) => {
+    return [
+      'build',
+      '-f',
+      `${this.config.realDockerfilePath ? this.config.realDockerfilePath : this.config.dockerfilePath}`,
+      '--build-arg',
+      `SERVICE_NAME=${this.name}`,
+      ...(conf.buildArgs || []),
+      ...(conf.environment || []),
+      '-t',
+      `${this.config.tag}`,
+      'production/'
+    ];
+  };
+
+  _getDockerfilePath = (name, conf) => {
+    if (conf.dockerfilePath) {
+      if (!path.isAbsolute(conf.dockerfilePath)) {
+        return path.resolve(
+          config.basePath,
+          config.servicesPath,
+          name,
+          conf.dockerfilePath
+        );
+      }
+
+      return conf.dockerfilePath;
+    }
+
+    return Builder.DOCKERFILE_PATH;
+  }
+
+  _setupImageUtils = () => {
     this.on('beforeFinish', (obj) => {
       const transformed = {
         ...obj
@@ -60,7 +81,7 @@ class Builder extends Command {
           name: this.config.tag,
           published: false,
           size,
-          humanSize: Builder.humanFileSize(size)
+          humanSize: humanFileSize(size)
         }
       }
 
@@ -74,11 +95,6 @@ class Builder extends Command {
       .toString()
       .trim();
   }
-
-  static humanFileSize = (size) => {
-    const i = Math.floor(Math.log(size) / Math.log(1024));
-    return (size / Math.pow(1024, i)).toFixed(2) + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][i];
-  };
 }
 
 module.exports = Builder;

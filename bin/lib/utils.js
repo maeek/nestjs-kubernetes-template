@@ -16,7 +16,33 @@ const getServicesToBuild = () => {
   );
 };
 
+const getServiceConfig = (service) => {
+  const packageJson = JSON.parse(
+    fs.readFileSync(path.resolve(config.basePath, config.servicesPath, service, 'package.json'), 'utf8')
+  );
+
+  if (packageJson.dockerBuildOptions) {
+    return packageJson.dockerBuildOptions;
+  }
+
+  const configFilePath = path.resolve(config.basePath, config.servicesPath, service, config.customServiceConfig);
+  const configFileExists = fs.existsSync(configFilePath);
+
+  console.log(configFilePath, configFileExists);
+
+  if (configFileExists) {
+    return require(configFilePath);
+  }
+};
+
+const humanFileSize = (size) => {
+  const i = Math.floor(Math.log(size) / Math.log(1024));
+  return (size / Math.pow(1024, i)).toFixed(2) + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][i];
+}
+
 module.exports = {
   getFolders,
-  getServicesToBuild
+  getServicesToBuild,
+  getServiceConfig,
+  humanFileSize
 };

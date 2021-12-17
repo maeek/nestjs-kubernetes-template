@@ -1,11 +1,11 @@
-const { getServicesToBuild } = require('./lib/utils');
+const { getServicesToBuild, getServiceConfig } = require('./lib/utils');
 const Builder = require('./lib/Builder');
 
 const run = async () => {
   console.time('\nBuild duration ');
 
   const services = getServicesToBuild();
-  const builders = services.map(service => new Builder(service));
+  const builders = services.map(service => new Builder(service, getServiceConfig(service)));
   const builds = [];
   
   builders.forEach(builder => {
@@ -39,10 +39,12 @@ const run = async () => {
   console.timeEnd('\nBuild duration ');
 
   if (builders.some(builder => builder.hasErrors)) {
-    console.error('One or more of the build failed');
+    const failedBuilds = builders.filter(builder => builder.hasErrors).map(builder => builder.name);
+    console.error(`${failedBuilds.length} build${failedBuilds.length > 1 ? 's' : ''} failed`);
     console.error(
       'Failed builds: ',
-      builders.filter(builder => builder.hasErrors).map(builder => builder.name));
+      failedBuilds
+    );
     process.exit(1);
   }
 

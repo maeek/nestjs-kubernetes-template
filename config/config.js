@@ -16,6 +16,8 @@ module.exports = {
     'node_modules',
     'types',
   ],
+  // Custom service config file to override default build config
+  customServiceConfig: 'docker-build.config.js',
   // Docker binary path
   // dockerPath: '/usr/bin/docker',
 };
