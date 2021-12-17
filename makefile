@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 
 build-all: setup_env
-	node bin/build-all.js | tee build.log
+	node tools/build-all.js | tee build.log
 
 publish-all: setup_env
 	docker push 
