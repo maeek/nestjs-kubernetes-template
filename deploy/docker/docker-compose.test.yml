@@ -11,7 +11,10 @@ services:
   gateway:
     build:
       context: ../../production
-      dockerfile: ../deploy/docker/gateway/Dockerfile.development
+      dockerfile: ../deploy/docker/Dockerfile.development
+      args:
+        NODE_VERSION: 14.8.0-alpine
+        SERVICE_NAME: gateway
     restart: always
     hostname: ${GATEWAY_SERVICE_HOST}
     env_file:
@@ -28,7 +31,10 @@ services:
   example:
     build:
       context: ../../production
-      dockerfile: ../deploy/docker/example/Dockerfile.development
+      dockerfile: ../deploy/docker/Dockerfile.development
+      args:
+        NODE_VERSION: 14.8.0-alpine
+        SERVICE_NAME: example-service
     restart: always
     hostname: ${EXAMPLE_SERVICE_HOST}
     env_file:

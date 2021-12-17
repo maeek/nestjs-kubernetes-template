@@ -1,27 +1,31 @@
-FROM node:14.8.0-alpine as builder
+ARG NODE_VERSION=14.8.0-alpine
 
-ARG servicename
+# Builder image
+FROM node:${NODE_VERSION} as builder
 
-RUN echo "Building service: $servicename"
+ARG SERVICE_NAME
+
+RUN echo "Building service: $SERVICE_NAME"
 
 WORKDIR /srv
 
-COPY ./${servicename} ./${servicename}
+COPY ./${SERVICE_NAME} ./${SERVICE_NAME}
 COPY ./types ./types
 
-RUN echo ${servicename} && rm -rf ${servicename}/node_modules types/node_modules \
-  && npm --prefix ${servicename} ci \
+RUN echo ${SERVICE_NAME} && rm -rf ${SERVICE_NAME}/node_modules types/node_modules \
+  && npm --prefix ${SERVICE_NAME} ci \
   && npm --prefix types ci \
-  && npm --prefix ${servicename} run build
+  && npm --prefix ${SERVICE_NAME} run build
 
-FROM node:14.8.0-alpine
+# Runtime image
+FROM node:${NODE_VERSION}
 
-ARG servicename
+ARG SERVICE_NAME
 
 WORKDIR /srv
 
-COPY --from=builder /srv/${servicename}/node_modules/ ./node_modules/
-COPY --from=builder /srv/${servicename}/dist/ .
+COPY --from=builder /srv/${SERVICE_NAME}/node_modules/ ./node_modules/
+COPY --from=builder /srv/${SERVICE_NAME}/dist/ .
 
 EXPOSE 8080
 

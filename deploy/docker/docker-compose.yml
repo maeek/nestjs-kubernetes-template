@@ -13,7 +13,8 @@ services:
       context: ../../production
       dockerfile: ../deploy/docker/Dockerfile
       args:
-        servicename: gateway
+        NODE_VERSION: 14.8.0-alpine
+        SERVICE_NAME: gateway
     restart: always
     hostname: gateway
     env_file:
@@ -29,7 +30,8 @@ services:
       context: ../../production
       dockerfile: ../deploy/docker/Dockerfile
       args:
-        servicename: example-service
+        NODE_VERSION: 14.8.0-alpine
+        SERVICE_NAME: example-service
     restart: always
     hostname: example
     env_file:
