@@ -12,9 +12,13 @@ set -a
 source config/.env
 
 # start
+make docker-compose-prod-up
+# or
 docker-compose -f deploy/docker/docker-compose.yml up --build
 
 # stop
+make docker-compose-prod-down
+# or
 docker-compose -f deploy/docker/docker-compose.yml down --remove-orphans
 ```
 
@@ -30,8 +34,12 @@ set -a
 source config/.env
 
 # start
+make docker-compose-dev-up
+# or
 docker-compose -f deploy/docker/docker-compose.test.yml up --build
 
 # stop
+make docker-compose-dev-down
+# or
 docker-compose -f deploy/docker/docker-compose.test.yml down --remove-orphans
 ```
