@@ -3,15 +3,19 @@
 ## 1. Building images
 
 Before we can run the app in kubernetes cluster, we have to build and publish images to the registry.
-For this purpose I will show how to setup local registry.
+For this purpose I will show how to setup local docker registry.
+
+> Note: You can use any docker registry you have access to, I recommend to use [Docker Hub](https://hub.docker.com/).
 
 ### 1.1. Local registry setup (optional)
+
+> Note: This is a short guide, please refer to the official documentation for more details.
 
 #### 1.1.1. docker-compose method
 
 Run registry with docker-compose to never search for a `docker run` command again. You can use the provided example `deploy/docker/registry-docker-compose.yml`.
 
-Change your credentials, default is `user`:`mysecurepassword`
+> Note: Remember to change your credentials! Default credentials are `user`:`mysecurepassword`
 
 ```bash
 docker run --entrypoint htpasswd httpd:2 -Bbn user mysecurepassword  > config/htpasswd
@@ -45,7 +49,7 @@ Firts you have to login to the registry.
 docker login -u user localhost:5000 # password is mysecurepassword
 ```
 
-Testing publishin images to the registry.
+Testing publishing images to the registry.
 
 ```bash
 # Tag and push images to the registry
@@ -53,7 +57,7 @@ docker pull node:14.8.0-alpine
 docker tag node:14.8.0-alpine localhost:5000/node:14.8.0-alpine
 docker push localhost:5000/node:14.8.0-alpine
 
-# Remove image from hub.docker.io
+# Remove local images
 docker image remove node:14.8.0-alpine
 docker image remove localhost:5000/node:14.8.0-alpine
 
@@ -64,7 +68,7 @@ docker pull localhost:5000/node:14.8.0-alpine
 
 If all commands ran successfully, you should see the following output:
 
-```
+```txt
 14.8.0-alpine: Pulling from node
 Digest: sha256:xxxxxxxxxxxxxxx
 Status: Downloaded newer image for localhost:5000/node:14.8.0-alpine
@@ -73,21 +77,22 @@ localhost:5000/node:14.8.0-alpine
 
 ### 1.2. Building images for all services
 
-#### 1.2.1. Build a single image - process
+#### 1.2.1. Build a single image - overview
 
 You can build a single image with `docker build` command (running it from the root path).
 
 ```bash
 docker build -t localhost:5000/gateway-service \
   -f deploy/docker/Dockerfile \
-  --build-arg servicename="gateway" \
+  --build-arg NODE_VERSION=14.8.0-alpine \
+  --build-arg SERVICE_NAME="gateway" \
   production/
 
 # Push new image to the registry
 docker push localhost:5000/gateway-service
 ```
 
-Change build-arg servicename to the folder name of the service you want to build (e.g. example-service).
+Change build-arg SERVICE_NAME to the folder name of the service you want to build (e.g. example-service).
 
 #### 1.2.2. Build all images
 
