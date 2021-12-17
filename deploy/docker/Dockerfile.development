@@ -5,8 +5,6 @@ FROM node:${NODE_VERSION} as builder
 
 ARG SERVICE_NAME
 
-RUN echo "Building service: $SERVICE_NAME"
-
 WORKDIR /srv
 
 COPY ./${SERVICE_NAME} ./${SERVICE_NAME}
