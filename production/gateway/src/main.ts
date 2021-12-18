@@ -19,6 +19,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup(process.env.SWAGGER_PATH || FALLBACK_SWAGGER_PATH, app, document);
 
+  app.enableCors();
   app.use((_req, res: Response, next) => {
     res.removeHeader('X-Powered-By');
     next();
