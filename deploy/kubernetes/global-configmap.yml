@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: global-configmap
+data:
+  API_PORT: "8080"
+  EXAMPLE_SERVICE_HOST: example-service
+

@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: example
 spec:
+  replicas: 2
   selector:
     matchLabels:
       app: example
@@ -13,13 +14,40 @@ spec:
     spec:
       containers:
       - name: example
-        image: nestjs-microservice-example
+        image: "reg.suchanecki.me/example-service:latest"
+        imagePullPolicy: IfNotPresent
         resources:
           limits:
             memory: "128Mi"
-            cpu: "500m"
+            cpu: "250m"
         ports:
         - containerPort: 8080
+        env:
+          - name: API_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: global-configmap
+                key: API_PORT
+          - name: EXAMPLE_SERVICE_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: global-configmap
+                key: EXAMPLE_SERVICE_HOST
+        # - name: MONGO_USER
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: mongodb-secret
+        #       key: mongo-app-username
+        # - name: MONGO_PASSWORD
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: mongodb-secret
+        #       key: mongo-app-password
+        # - name: MONGO_DSN
+        #   valueFrom:
+        #     configMapKeyRef:
+        #       name: mongodb-secret
+        #       key: mongo-dsn
 ---
 apiVersion: v1
 kind: Service

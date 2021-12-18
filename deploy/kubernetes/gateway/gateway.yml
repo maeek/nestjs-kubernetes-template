@@ -13,13 +13,25 @@ spec:
     spec:
       containers:
       - name: gateway
-        image: nestjs-microservice-gateway
+        image: "reg.suchanecki.me/gateway:latest"
+        imagePullPolicy: IfNotPresent
         resources:
           limits:
             memory: "128Mi"
             cpu: "500m"
         ports:
         - containerPort: 8080
+        env:
+          - name: API_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: global-configmap
+                key: API_PORT
+          - name: EXAMPLE_SERVICE_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: global-configmap
+                key: EXAMPLE_SERVICE_HOST
 ---
 apiVersion: v1
 kind: Service
@@ -29,6 +41,7 @@ spec:
   selector:
     app: gateway
   ports:
-  - port: 8080
+  - protocol: TCP
+    port: 8080
     targetPort: 8080
 
