@@ -30,5 +30,6 @@
 
 ## Working with this template
 
+- [Building container images](./docs/Building.md)
 - [Deployment with Docker](./docs/Docker.md)
 - [Deployment with Kubernetes](./docs/Kubernetes.md)
