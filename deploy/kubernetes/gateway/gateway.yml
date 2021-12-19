@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: gateway
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: gateway
@@ -14,14 +15,19 @@ spec:
       containers:
       - name: gateway
         image: "reg.suchanecki.me/gateway:latest"
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
           limits:
             memory: "128Mi"
             cpu: "500m"
         ports:
         - containerPort: 8080
         env:
+          - name: NODE_ENV
+            value: "production"
           - name: API_PORT
             valueFrom:
               configMapKeyRef:
@@ -32,6 +38,17 @@ spec:
               configMapKeyRef:
                 name: global-configmap
                 key: EXAMPLE_SERVICE_HOST
+        readinessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /status
+            port: 8080
+      imagePullSecrets:
+      - name: dpr-secret
 ---
 apiVersion: v1
 kind: Service
