@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: example
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: example
@@ -14,15 +14,20 @@ spec:
     spec:
       containers:
       - name: example
-        image: "reg.suchanecki.me/example-service:latest"
-        imagePullPolicy: IfNotPresent
+        image: "reg.suchanecki.me/example:latest"
+        imagePullPolicy: Always
         resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
           limits:
             memory: "128Mi"
-            cpu: "250m"
+            cpu: "500m"
         ports:
         - containerPort: 8080
         env:
+          - name: NODE_ENV
+            value: "production"
           - name: API_PORT
             valueFrom:
               configMapKeyRef:
@@ -33,21 +38,8 @@ spec:
               configMapKeyRef:
                 name: global-configmap
                 key: EXAMPLE_SERVICE_HOST
-        # - name: MONGO_USER
-        #   valueFrom:
-        #     secretKeyRef:
-        #       name: mongodb-secret
-        #       key: mongo-app-username
-        # - name: MONGO_PASSWORD
-        #   valueFrom:
-        #     secretKeyRef:
-        #       name: mongodb-secret
-        #       key: mongo-app-password
-        # - name: MONGO_DSN
-        #   valueFrom:
-        #     configMapKeyRef:
-        #       name: mongodb-secret
-        #       key: mongo-dsn
+      imagePullSecrets:
+      - name: dpr-secret
 ---
 apiVersion: v1
 kind: Service
