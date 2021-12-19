@@ -1,0 +1,9 @@
+**/.git
+**/node_modules
+**/dist
+**/docs
+**/deploy
+**/config
+**/.vscode
+**/tools
+**/*.log

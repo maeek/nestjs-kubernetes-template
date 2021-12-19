@@ -44,7 +44,6 @@
   },
   "dockerBuildOptions": {
     "buildArgs": [
-      "--build-arg",
       "TEST_ARG=test"
     ]
   }

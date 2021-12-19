@@ -43,8 +43,8 @@ class Builder extends Command {
       `${this.config.realDockerfilePath ? this.config.realDockerfilePath : this.config.dockerfilePath}`,
       '--build-arg',
       `SERVICE_NAME=${this.name}`,
-      ...(conf.buildArgs || []),
-      ...(conf.environment || []),
+      ...(conf.buildArgs || []).map(arg => ['--build-arg', arg]).flat(Infinity),
+      ...(conf.environment || []).map(env => ['-e', env]).flat(Infinity),
       '-t',
       `${this.config.tag}`,
       'production/'

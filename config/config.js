@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
   // Build mode: 'development' or 'production'
-  mode: process.env.NODE_ENV,
+  mode: process.env.NODE_ENV || 'production',
   // The base directory (absolute path!) for resolving the entry option
   basePath: path.resolve(__dirname, '..'),
   // Services folder
