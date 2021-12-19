@@ -34,7 +34,7 @@ services:
       dockerfile: ../deploy/docker/Dockerfile.development
       args:
         NODE_VERSION: 14.8.0-alpine
-        SERVICE_NAME: example-service
+        SERVICE_NAME: example
     restart: always
     hostname: ${EXAMPLE_SERVICE_HOST}
     env_file:
@@ -43,7 +43,7 @@ services:
       - backend
     volumes:
       - "../../production/types/:/srv/types/"
-      - "../../production/example-service/:/srv/example-service/"
+      - "../../production/example/:/srv/example/"
     # links:
     #  - db
 

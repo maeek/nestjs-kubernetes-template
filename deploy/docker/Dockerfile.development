@@ -4,8 +4,9 @@ ARG NODE_VERSION=14.8.0-alpine
 FROM node:${NODE_VERSION} as builder
 
 ARG SERVICE_NAME
+ENV NODE_ENV=development
 
-WORKDIR /srv
+WORKDIR /usr/app
 
 COPY ./${SERVICE_NAME} ./${SERVICE_NAME}
 COPY ./types ./types
@@ -16,12 +17,13 @@ RUN npm --prefix ${SERVICE_NAME} ci && npm --prefix types ci
 FROM node:${NODE_VERSION}
 
 ARG SERVICE_NAME
+ENV NODE_ENV=development
 
-COPY --from=builder /srv/${SERVICE_NAME}/node_modules/ /srv/${SERVICE_NAME}/node_modules/
+COPY --from=builder /usr/app/${SERVICE_NAME}/node_modules/ /usr/app/${SERVICE_NAME}/node_modules/
 
-VOLUME [ "/srv/${SERVICE_NAME}/", "/srv/types" ]
+VOLUME [ "/usr/app/${SERVICE_NAME}/", "/usr/app/types" ]
 
-WORKDIR /srv/${SERVICE_NAME}
+WORKDIR /usr/app/${SERVICE_NAME}
 
 EXPOSE 8080
 
