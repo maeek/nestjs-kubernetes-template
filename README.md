@@ -33,7 +33,7 @@
 
 ## Folder structure
 
-```sh
+```txt
 .
 ├── config                       # Config files for building and running docker images
 │   ├── .env.example             # .env file for docker-compose
