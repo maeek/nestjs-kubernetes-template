@@ -1,4 +1,4 @@
-# Boilerplate for Nest.js microservices
+# Template for Nest.js microservices
 
 ## Features
 
