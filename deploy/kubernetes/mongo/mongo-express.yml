@@ -37,8 +37,8 @@ spec:
         - name: ME_CONFIG_MONGODB_SERVER
           valueFrom:
             configMapKeyRef:
-              name: mongodb-configmap
-              key: database-url
+              name: global-configmap
+              key: MONGO_HOST
 ---
 apiVersion: v1
 kind: Service
@@ -47,7 +47,7 @@ metadata:
 spec:
   selector:
     app: mongo-express
-  type: LoadBalancer  
+  type: LoadBalancer
   ports:
     - protocol: TCP
       port: 8081

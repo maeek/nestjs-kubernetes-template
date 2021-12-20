@@ -5,4 +5,5 @@ metadata:
 data:
   API_PORT: "8080"
   EXAMPLE_SERVICE_HOST: example-service
+  MONGO_HOST: mongodb
 
