@@ -56,6 +56,7 @@
 |   |       ├── controller.ts    # Service controller
 |   |       └── main.ts          # Service entrypoint
 │   └── types                    # Shared Types
+|       └── index.d.ts           # Types entrypoint
 |       └── src                  # Source code files for the shared types
 ├── tools                        # Tools and utilities
 ├── makefile
