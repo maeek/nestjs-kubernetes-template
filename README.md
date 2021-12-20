@@ -2,13 +2,13 @@
 
 ## Features
 
-- Shared types
-- Nest.js microservices architecture
-- Kubernetes deployment
-- MongoDB - optional
-- Mongo-express - optional
-- Redis - optional
-- RabbitMQ - optional
+- [x] Shared types
+- [x] Nest.js microservices architecture
+- [x] Kubernetes deployment
+- [x] MongoDB - optional
+- [x] Mongo-express - optional
+- [x] Redis - optional
+- [x] RabbitMQ - optional
 
 ## Accessing the API and swagger docs
 
@@ -19,11 +19,11 @@
 
 ## Brief architecture overview
 
-- API gateway
-- Example service
-- MongoDB database - right now there is a single DB to store all the data (disabled for now
-- RabbitMQ - message broker service that allow communication between services, pub/sub (disabled for now
-- Redis - used for caching for faster and less database heavy requests, pub/sub (disabled for now
+- [x] API gateway
+- [x] Example service
+- [ ] MongoDB database - right now there is a single DB to store all the data
+- [ ] RabbitMQ - message broker service that allow communication between services, pub/sub
+- [ ] Redis - used for caching for faster and less database heavy requests, pub/sub
 
 ## Working with this template
 
