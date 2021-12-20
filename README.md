@@ -5,12 +5,10 @@
 - Shared types
 - Nest.js microservices architecture
 - Kubernetes deployment
-- Istio service mesh
 - MongoDB - optional
 - Mongo-express - optional
 - Redis - optional
 - RabbitMQ - optional
-- Prometheus monitoring - optional
 
 ## Accessing the API and swagger docs
 
@@ -23,10 +21,9 @@
 
 - API gateway
 - Example service
-- The service interact via **Istio service mesh**
-- MongoDB database - right now there is a single DB to store all the data
-- RabbitMQ - message broker service that allow communication between services, pub/sub
-- Redis - used for caching for faster and less database heavy requests, pub/sub
+- MongoDB database - right now there is a single DB to store all the data (disabled for now
+- RabbitMQ - message broker service that allow communication between services, pub/sub (disabled for now
+- Redis - used for caching for faster and less database heavy requests, pub/sub (disabled for now
 
 ## Working with this template
 
