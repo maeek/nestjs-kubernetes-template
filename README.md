@@ -12,7 +12,7 @@
 
 ## Accessing the API and swagger docs
 
-- Once you launch the API it will be accessible on port 8000.
+- Once you launch the API it will be accessible on port 8080.
 - RabbitMQ management will be accessible on port 15672
 - MongoDB will be accessible on port 27017
 - Swagger docs for the API will be accessible locally via URI "**<http://localhost:8080/api-docs/>**"
