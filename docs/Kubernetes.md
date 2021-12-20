@@ -14,7 +14,7 @@ This document assumes that you have `docker`, [minikube](https://minikube.sigs.k
 To deploy the whole app to the cluster, run the following commands. If you want to deploy the app to a specific namespace, you can provide it as an argument.
 
 ```bash
-kubectl apply -R -f deploy/kubernetes -n <namespace>
+kubectl apply -R -f deploy/k8s -n <namespace>
 ```
 
 To see the status of the deployment, run the following command:
@@ -28,7 +28,7 @@ kubectl get deployments -n <namespace>
 You can deploy specific services by running the following commands:
 
 ```bash
-kubectl apply -f deploy/kubernetes/global-configmap.yml -n <namespace>
+kubectl apply -f deploy/k8s/global-configmap.yml -n <namespace>
 ```
 
 ### Remove services
@@ -37,10 +37,10 @@ After deploying the app to the cluster, you can remove the services by running t
 
 ```bash
 # Remove single service
-kubectl delete -f deploy/kubernetes/global-configmap.yml -n <namespace>
+kubectl delete -f deploy/k8s/global-configmap.yml -n <namespace>
 
 # Remove all services
-kubectl delete -R -f deploy/kubernetes -n <namespace>
+kubectl delete -R -f deploy/k8s -n <namespace>
 ```
 
 ## Ingress configuration
