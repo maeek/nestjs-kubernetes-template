@@ -5,6 +5,7 @@ import {
   HttpStatus,
   HttpException,
   Post,
+  Param,
 } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 import { ClientProxy } from '@nestjs/microservices';
@@ -23,13 +24,20 @@ export class ExampleController {
   ) {}
 
   @Get()
+  public async index() {
+    return {
+      message: 'Use /example/:num to get the sum of numbers: 100 + :num',
+    };
+  }
+
+  @Get('/:num')
   @Permission('example.get')
-  public async postResult(): Promise<ExampleResponse> {
+  public async postResult(@Param('num') num: number): Promise<ExampleResponse> {
     const exampleResponse: ExampleService.ServiceResponse = await firstValueFrom(
       this.exampleServiceClient.send(
         EXAMPLE_SERVICE_ACTIONS_ENUM.EXAMPLE_SERVICE_ACTION_1,
         {
-          data: 42,
+          data: num,
         }
       ),
     );
@@ -38,7 +46,6 @@ export class ExampleController {
       throw new HttpException(
         {
           message: exampleResponse.message,
-          data: null,
           error: exampleResponse.errors,
         },
         exampleResponse.status,
