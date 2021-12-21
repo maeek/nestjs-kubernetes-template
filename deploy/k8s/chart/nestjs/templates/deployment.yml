@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Chart.Name }}-{{ .Values.name }}"
+  labels:
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+spec:
+  replicas: {{ .Values.replicaCount }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: "{{ .Chart.Name }}-{{ .Values.name }}"
+      version: "current"
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  template:
+    metadata:
+      labels:
+        app: "{{ .Chart.Name }}-{{ .Values.name }}"
+    spec:
+      containers:
+      - name: "{{ .Chart.Name }}-{{ .Values.name }}"
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.pullPolicy }}
+        resources:
+          requests:
+            memory: {{ .Values.resources.requests.memory }}
+            cpu: {{ .Values.resources.requests.cpu }}
+        ports:
+        - containerPort: {{ .Values.service.port }}
+
+        env:
+        {{- range $key, $value := $.Values.env.fromConfigMap.data }}
+        - name: {{ $key }}
+          valueFrom:
+            secretKeyRef:
+                name: {{ $.Values.env.fromConfigMap.name  }}
+                key: {{ $value }}
+        {{- end }}
+
+        readinessProbe:
+          httpGet:
+            path: {{ .Values.probeEndpoint }}
+            port: {{ .Values.service.port }}
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: {{ .Values.probeEndpoint }}
+            port: {{ .Values.service.port }}
+          initialDelaySeconds: 40
+          periodSeconds: 10 
+
+      imagePullSecrets:
+      - name: {{ $.Values.image.imagePullSecrets }}
+
+

@@ -1,0 +1,38 @@
+name: example
+revisionHistoryLimit: 1
+
+deployment:
+  replicaCount: 1
+  image:
+    repository: "reg.suchanecki.me/example"
+    tag: latest
+    pullPolicy: Always
+    imagePullSecrets: dpr-secret
+  resources:
+    requests:
+      cpu: 200m
+      memory: 300Mi
+  readinessProbe: {}
+  livenessProbe: {}
+  env:
+  NODE_ENV: production
+  API_PORT: global-configmap
+
+service:
+  name: example-service
+  port: 8080
+
+# Horizontal pod autoscaler
+hpa:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 2
+  metrics:
+    cpu:
+      targetAverageUtilization: 70
+    memory:
+      targetAverageUtilization: 70
+services:
+  istio:
+    enabled: true
+    weight: 100

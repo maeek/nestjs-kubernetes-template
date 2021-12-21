@@ -1,0 +1,39 @@
+name: gateway
+revisionHistoryLimit: 1
+replicaCount: 1
+image:
+  repository: "reg.suchanecki.me/gateway"
+  tag: latest
+  pullPolicy: Always
+  imagePullSecrets: dpr-secret
+resources:
+  requests:
+    cpu: 200m
+    memory: 300Mi
+probeEndpoint: /status
+env:
+  NODE_ENV: production
+  fromConfigMap:
+    name: global-configmap
+    data:
+      API_PORT: API_PORT
+      EXAMPLE_SERVICE_HOST: EXAMPLE_SERVICE_HOST
+
+service:
+  name: gateway-service
+  port: 8080
+
+# Horizontal pod autoscaler
+services:
+  hpa:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 2
+    metrics:
+      cpu:
+        targetAverageUtilization: 70
+      memory:
+        targetAverageUtilization: 70
+  istio:
+    enabled: true
+    weight: 100

@@ -1,0 +1,27 @@
+{{ if .Values.services.hpa.enabled }}
+{{ if and (eq .Capabilities.KubeVersion.Major "1") (ge .Capabilities.KubeVersion.Minor "8") }}
+apiVersion: autoscaling/v2beta1
+{{ else }}
+apiVersion: autoscaling/v2alpha1
+{{ end }}
+kind: HorizontalPodAutoscaler
+metadata:
+  name: "{{ .Chart.Name }}-{{ .Values.name }}-hpa-policy"
+  namespace: 
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1beta1
+    kind: Deployment
+    name: "{{ .Chart.Name }}-{{ .Values.name }}"
+  minReplicas: {{ .Values.services.hpa.minReplicas }}
+  maxReplicas: {{ .Values.services.hpa.maxReplicas }}
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      targetAverageUtilization: {{ .Values.services.hpa.metrics.cpu.targetAverageUtilization }}
+  - type: Resource
+    resource:
+      name: memory
+      targetAverageUtilization: {{ .Values.services.hpa.metrics.memory.targetAverageUtilization }}
+{{ end }}

@@ -1,0 +1,28 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: nestjs-gateway
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: nestjs-microservice
+spec:
+  hosts:
+  - "api.local"
+  http:
+  - route:
+    - destination:
+        host: {{ $.Values.service.name }}
+        port:
+          number: {{ $.Values.service.port }}
