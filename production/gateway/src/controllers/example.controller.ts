@@ -4,7 +4,6 @@ import {
   Inject,
   HttpStatus,
   HttpException,
-  Post,
   Param,
 } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
