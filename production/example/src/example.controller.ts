@@ -12,7 +12,7 @@ export class ExampleController {
 
   @MessagePattern(MESSAGE_PATTERNS.EXAMPLE_SERVICE_ACTION_1)
   public async registerDevice(
-    data: { data: number },
+    data: { data: string },
   ): Promise<ExampleResponse> {
     try {
       const { data: num } = data || {};

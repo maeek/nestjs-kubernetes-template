@@ -46,15 +46,14 @@ export class ExampleController {
       throw new HttpException(
         {
           message: exampleResponse.message,
-          error: exampleResponse.errors,
+          errors: exampleResponse.errors,
         },
         exampleResponse.status,
       );
     }
 
     return {
-      result: exampleResponse.result,
-      error: exampleResponse?.errors,
+      result: exampleResponse.result
     };
   }
 }

@@ -1,6 +1,6 @@
 export interface ExampleResponse {
   result: number,
-  error: {
+  errors?: {
     [key: string | number]: string
   },
 }
