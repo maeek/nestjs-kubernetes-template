@@ -11,18 +11,18 @@ updates:
       interval: "weekly"
       day: "saturday"
     commit-message:
-      prefix: "chore: Bump dependencies - gateway"
+      prefix: "chore: Bump gateway"
   - package-ecosystem: "npm"
     directory: "/production/types"
     schedule:
       interval: "weekly"
       day: "saturday"
     commit-message:
-      prefix: "chore: Bump dependencies - types"
+      prefix: "chore: Bump types"
   - package-ecosystem: "npm"
     directory: "/production/example"
     schedule:
       interval: "weekly"
       day: "saturday"
     commit-message:
-      prefix: "chore: Bump dependencies - example"
+      prefix: "chore: Bump example"
