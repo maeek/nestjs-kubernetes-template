@@ -20,7 +20,7 @@
     "@nestjs/mongoose": "^9.0.1",
     "@nestjs/platform-express": "^8.2.4",
     "@types/uuid": "^8.3.3",
-    "amqp-connection-manager": "^3.7.0",
+    "amqp-connection-manager": "^4.0.0",
     "amqplib": "^0.8.0",
     "mongoose": "^6.1.2",
     "reflect-metadata": "^0.1.13",
