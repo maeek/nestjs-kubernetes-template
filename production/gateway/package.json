@@ -19,7 +19,7 @@
     "@nestjs/microservices": "^8.2.4",
     "@nestjs/platform-express": "^8.2.4",
     "@nestjs/swagger": "^5.1.5",
-    "amqp-connection-manager": "^3.7.0",
+    "amqp-connection-manager": "^4.0.0",
     "amqplib": "^0.8.0",
     "helmet": "^5.0.1",
     "reflect-metadata": "^0.1.13",
